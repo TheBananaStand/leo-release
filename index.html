@@ -36,8 +36,6 @@
     background: linear-gradient(110deg, var(--accent) 0%, var(--mint) 90%);
     -webkit-background-clip: text; background-clip: text; color: transparent;
   }
-
-  /* ── Buttons ────────────────────────────────────────────── */
   .btn {
     display: inline-flex; align-items: center; justify-content: center; gap: 8px;
     cursor: pointer; border: 1px solid transparent; white-space: nowrap;
@@ -51,8 +49,6 @@
   .btn-ghost:hover { background: rgba(235,230,221,0.06); }
   .btn-sm { padding: 8px 16px; font-size: 14px; }
   .cta-row { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
-
-  /* ── “Alive” breathing glow ──────────────────────────────────── */
   .glow { position: relative; }
   .glow::before {
     content: ""; position: absolute; inset: -40%; border-radius: 50%; z-index: -1;
@@ -60,8 +56,6 @@
     animation: breathe 3s ease-in-out infinite;
   }
   @keyframes breathe { 0%,100% { opacity: .1; } 50% { opacity: .3; } }
-
-  /* ── Sticky nav ──────────────────────────────────────────── */
   .nav {
     position: sticky; top: 0; z-index: 50;
     display: flex; align-items: center; justify-content: space-between; padding: 14px 28px;
@@ -70,8 +64,6 @@
   }
   .nav .brand { display: flex; align-items: center; gap: 9px; font-weight: 600; letter-spacing: .2px; }
   .nav .brand img { width: 26px; height: 26px; border-radius: 7px; }
-
-  /* ── Hero ─────────────────────────────────────────────────── */
   .hero {
     position: relative; min-height: 92vh; display: flex; flex-direction: column;
     align-items: center; justify-content: center; text-align: center; padding: 76px 28px 60px;
@@ -91,21 +83,15 @@
   .sub { font-size: clamp(17px, 2.1vw, 21px); line-height: 1.5; color: var(--muted); max-width: 56ch; margin: 0 auto 34px; }
   .scroll-hint { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); color: var(--muted); opacity: .55; animation: bob 1.8s ease-in-out infinite; }
   @keyframes bob { 0%,100% { transform: translate(-50%,0); } 50% { transform: translate(-50%,7px); } }
-
-  /* ── Cross-domain statement ──────────────────────────────────── */
   .statement { padding: 120px 0; border-top: 1px solid var(--line); text-align: center;
     background: radial-gradient(70% 60% at 50% 50%, rgba(52,211,153,0.06), transparent 70%); }
   .statement-alt { background: radial-gradient(70% 60% at 50% 50%, rgba(26,158,107,0.09), transparent 70%); }
   .statement .pre { font-size: clamp(18px, 2.4vw, 24px); color: var(--muted); margin: 0 0 14px; font-weight: 500; }
   .statement .big { font-size: clamp(30px, 5vw, 56px); line-height: 1.1; letter-spacing: -0.025em; font-weight: 700; margin: 0 auto 28px; max-width: 18ch; }
   .statement .body { font-size: clamp(16px, 1.9vw, 19px); line-height: 1.6; color: var(--muted); max-width: 56ch; margin: 0 auto; }
-
-  /* ── Section intro ─────────────────────────────────────────── */
   .intro { text-align: center; padding: 96px 0 8px; }
   .intro .eyebrow { color: var(--accent); font-weight: 700; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; }
   .intro h2 { font-size: clamp(28px, 4.4vw, 46px); letter-spacing: -0.02em; margin: 12px 0 0; }
-
-  /* ── Feature rows ──────────────────────────────────────────── */
   section.feat { padding: 64px 0; }
   .feat .row { display: grid; grid-template-columns: 1.1fr 1fr; gap: 48px; align-items: center; }
   .feat:nth-child(even) .row { grid-template-columns: 1fr 1.1fr; }
@@ -118,12 +104,8 @@
     background: radial-gradient(120% 120% at 30% 10%, rgba(52,211,153,0.12), transparent 60%), var(--bg-2);
     display: flex; align-items: center; justify-content: center; overflow: hidden; }
   .art .glyph { width: 36%; height: 36%; color: var(--accent); opacity: .9; }
-
-  /* ── Reveal on scroll ─────────────────────────────────────────── */
   .reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1); }
   .reveal.in { opacity: 1; transform: none; }
-
-  /* ── Rust / privacy band ───────────────────────────────────────── */
   .band { margin: 64px 0; padding: 72px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
     text-align: center; background: radial-gradient(60% 80% at 50% 0%, rgba(26,158,107,0.10), transparent 70%); }
   .band .eyebrow { justify-content: center; }
@@ -132,7 +114,20 @@
   .pills { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 26px; }
   .pill { border: 1px solid var(--line); border-radius: 999px; padding: 7px 15px; font-size: 13px; color: var(--fg); background: rgba(235,230,221,0.03); }
 
-  /* ── Get started ─────────────────────────────────────────────── */
+  /* ── Topology ────────────────────────────────────────────────────────── */
+  .topo { padding: 96px 0; border-top: 1px solid var(--line); text-align: center; }
+  .topo-title { font-size: clamp(28px, 4.4vw, 46px); letter-spacing: -0.02em; margin: 12px 0 0; }
+  .topo-sub { font-size: clamp(15px, 1.8vw, 18px); line-height: 1.65; color: var(--muted); max-width: 52ch; margin: 14px auto 52px; }
+  .topo-diagram { overflow-x: auto; -webkit-overflow-scrolling: touch; padding: 0 28px 8px; }
+  .topo-svg { min-width: 640px; width: 100%; max-width: 820px; margin: 0 auto; display: block; overflow: visible; }
+  @keyframes dash-run { to { stroke-dashoffset: -28; } }
+  .flow-line { animation: dash-run 2.4s linear infinite; }
+  @keyframes hub-breathe { 0%,100% { opacity: 0.6; } 50% { opacity: 1; } }
+  .hub-aura { animation: hub-breathe 3s ease-in-out infinite; }
+  @keyframes hub-dot { 0%,100% { opacity: 1; } 50% { opacity: 0.25; } }
+  .hub-dot { animation: hub-dot 1.6s ease-in-out infinite; }
+
+  /* ── Get started ─────────────────────────────────────────────────────── */
   .get { padding: 96px 0 40px; text-align: center; }
   .get h2 { font-size: clamp(28px, 4.5vw, 46px); letter-spacing: -0.02em; margin: 0 0 10px; }
   .get .lead { color: var(--muted); font-size: 18px; margin: 0 auto 40px; max-width: 48ch; }
@@ -151,6 +146,7 @@
     .art { aspect-ratio: 16/9; }
     .steps { grid-template-columns: 1fr; }
     .statement { padding: 84px 0; }
+    .topo { padding: 64px 0; }
   }
 </style>
 </head>
@@ -160,195 +156,219 @@
     <a class="btn btn-primary btn-sm" href="https://github.com/TheBananaStand/leo-release/releases/download/latest/Leo.dmg">Download Leo for Mac</a>
   </nav>
 
-  <!-- Hero -->
   <header class="hero">
     <div class="hero-logo glow"><img src="data:image/png;base64,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" alt="Leo" /></div>
     <div class="kicker">Private AI Home Operating System</div>
     <h1>Your whole home, <span class="grad">thinking as one</span>.</h1>
-    <p class="sub">
-      Leo brings your home, family, calendar, money, and Apple devices into a single system
-      that reasons across all of it — running privately on a server you own, and written from
-      the ground up in Rust.
-    </p>
+    <p class="sub">Leo brings your home, family, calendar, money, and Apple devices into a single system that reasons across all of it — running privately on a server you own, and written from the ground up in Rust.</p>
     <div class="cta-row">
       <a class="btn btn-primary" href="https://github.com/TheBananaStand/leo-release/releases/download/latest/Leo.dmg">Download Leo for Mac</a>
       <a class="btn btn-ghost iso-link" href="https://github.com/TheBananaStand/leo-release/releases">Download Leo OS</a>
     </div>
-    <div class="scroll-hint" aria-hidden="true">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
-    </div>
+    <div class="scroll-hint" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></div>
   </header>
 
-  <!-- Cross-domain reasoning -->
   <section class="statement">
     <div class="wrap reveal">
       <p class="pre">Soccer at 4. Rain at 3. The garage door still open.</p>
       <h2 class="big">To Leo, that’s <span class="grad">one thought</span> — not three apps.</h2>
-      <p class="body">
-        Most assistants answer questions. Leo connects them. Because your calendar, your sensors,
-        your messages, and your money all live in one place, Leo can reason across everything at
-        once — and act before you have to ask.
-      </p>
+      <p class="body">Most assistants answer questions. Leo connects them. Because your calendar, your sensors, your messages, and your money all live in one place, Leo can reason across everything at once — and act before you have to ask.</p>
     </div>
   </section>
 
-  <!-- Package system -->
   <section class="statement statement-alt">
     <div class="wrap reveal">
       <p class="pre">And it’s never finished.</p>
       <h2 class="big">A new type of <span class="grad">operating system</span>.</h2>
-      <p class="body">
-        Leo isn’t a fixed app with a feature list. Like any real OS, every capability — your smart home,
-        your finances, your email, even the interface itself — is a package you can add, remove, or build
-        yourself. Leo is the layer everything else runs on, and it grows with you.
-      </p>
+      <p class="body">Leo isn’t a fixed app with a feature list. Like any real OS, every capability — your smart home, your finances, your email, even the interface itself — is a package you can add, remove, or build yourself. Leo is the layer everything else runs on, and it grows with you.</p>
       <div class="pills">
-        <span class="pill">Smart home</span>
-        <span class="pill">Calendar</span>
-        <span class="pill">Finance</span>
-        <span class="pill">Email</span>
-        <span class="pill">Knowledge</span>
-        <span class="pill">Weather</span>
-        <span class="pill">Code</span>
-        <span class="pill">+ your own</span>
+        <span class="pill">Smart home</span><span class="pill">Calendar</span><span class="pill">Finance</span>
+        <span class="pill">Email</span><span class="pill">Knowledge</span><span class="pill">Weather</span>
+        <span class="pill">Code</span><span class="pill">+ your own</span>
       </div>
     </div>
   </section>
 
-  <!-- Capabilities -->
-  <div class="intro reveal">
-    <div class="eyebrow">One system. Every domain.</div>
-    <h2>Everything your home runs on.</h2>
-  </div>
-
-  <section class="feat">
-    <div class="wrap reveal">
-      <div class="row">
-        <div class="copy">
-          <div class="eyebrow"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>Smart home</div>
-          <h2>Control your smart home.</h2>
-          <p>Lights, climate, locks, scenes, and sensors — in plain language or automated in the background. Works with Home Assistant.</p>
+  <!-- Topology -->
+  <section class="topo">
+    <div class="wrap">
+      <div class="reveal">
+        <div class="eyebrow" style="justify-content:center;margin-bottom:16px;">
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="3"/><circle cx="20" cy="19" r="3"/><circle cx="4" cy="19" r="3"/><line x1="12" y1="8" x2="4.7" y2="17"/><line x1="12" y1="8" x2="19.3" y2="17"/></svg>
+          The ecosystem
         </div>
-        <div class="art"><svg class="glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg></div>
+        <h2 class="topo-title">Your house. Your hardware. Your network.</h2>
+        <p class="topo-sub">Nothing in the cloud that doesn’t need to be. Leo runs at home on a server you own, speaks Apple through your Mac, and fits in your pocket on iOS.</p>
       </div>
+    </div>
+    <div class="topo-diagram reveal">
+      <svg class="topo-svg" viewBox="0 0 800 380" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="hglow" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="14" result="b"/>
+            <feComposite in="SourceGraphic" in2="b" operator="over"/>
+          </filter>
+          <style>
+            .nt { font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+            .nl { font-size: 10px; fill: rgba(158,148,136,0.55); }
+            .nc-accent { font-size: 10px; fill: rgba(52,211,153,0.65); }
+          </style>
+        </defs>
+
+        <!-- Hub glow aura -->
+        <rect x="310" y="147" width="180" height="96" rx="20" fill="rgba(52,211,153,0.13)" filter="url(#hglow)" class="hub-aura"/>
+
+        <!-- Lines -->
+        <!-- Hub top ↔ Claude -->
+        <line x1="400" y1="147" x2="400" y2="58" stroke="rgba(52,211,153,0.28)" stroke-width="1.5" stroke-dasharray="6 5" class="flow-line"/>
+        <!-- Hub ↔ Mac (WebSocket, prominent) -->
+        <line x1="490" y1="178" x2="562" y2="110" stroke="rgba(52,211,153,0.52)" stroke-width="2" stroke-dasharray="7 5" class="flow-line"/>
+        <!-- Hub → iPhone -->
+        <line x1="490" y1="212" x2="572" y2="277" stroke="rgba(158,148,136,0.28)" stroke-width="1.5" stroke-dasharray="5 6" class="flow-line"/>
+        <!-- Hub ↔ Home Assistant -->
+        <line x1="310" y1="178" x2="220" y2="110" stroke="rgba(158,148,136,0.28)" stroke-width="1.5" stroke-dasharray="5 6" class="flow-line"/>
+        <!-- Hub → Cloud services -->
+        <line x1="310" y1="212" x2="224" y2="278" stroke="rgba(158,148,136,0.28)" stroke-width="1.5" stroke-dasharray="5 6" class="flow-line"/>
+        <!-- Mac → iPhone (SSH / builds) -->
+        <line x1="638" y1="144" x2="638" y2="253" stroke="rgba(158,148,136,0.2)" stroke-width="1.5" stroke-dasharray="4 6"/>
+
+        <!-- Line labels -->
+        <text x="412" y="106" class="nt nc-accent">API</text>
+        <text x="506" y="136" class="nt nc-accent">WebSocket</text>
+        <text x="502" y="258" class="nt nl">HTTPS</text>
+        <text x="234" y="136" class="nt nl">local</text>
+        <text x="240" y="258" class="nt nl">API</text>
+        <text x="646" y="202" class="nt nl">SSH</text>
+
+        <!-- HUB node -->
+        <rect x="310" y="147" width="180" height="96" rx="20" fill="#1e1b17" stroke="rgba(52,211,153,0.55)" stroke-width="1.5"/>
+        <rect x="332" y="147" width="136" height="2" rx="1" fill="rgba(52,211,153,0.35)"/>
+        <!-- Pulsing status dot -->
+        <circle cx="334" cy="170" r="3.5" fill="rgba(52,211,153,0.9)" class="hub-dot"/>
+        <text x="400" y="173" font-size="8" font-weight="700" fill="rgba(52,211,153,0.7)" text-anchor="middle" letter-spacing="2.5" class="nt">LEO HUB</text>
+        <text x="400" y="193" font-size="14" font-weight="700" fill="#ebe6dd" text-anchor="middle" class="nt">Linux · Rust · always on</text>
+        <text x="400" y="211" font-size="11" fill="#9e9488" text-anchor="middle" class="nt">Axum · SQLite · Claude CLI</text>
+        <text x="400" y="228" font-size="11" fill="rgba(52,211,153,0.65)" text-anchor="middle" class="nt">MCP tools · all packages</text>
+
+        <!-- CLAUDE node -->
+        <rect x="336" y="14" width="128" height="44" rx="12" fill="#1a1815" stroke="rgba(235,230,221,0.09)" stroke-width="1"/>
+        <text x="400" y="34" font-size="12.5" font-weight="600" fill="#ebe6dd" text-anchor="middle" class="nt">Claude AI</text>
+        <text x="400" y="50" font-size="10" fill="#9e9488" text-anchor="middle" class="nt">Anthropic · LLM inference</text>
+
+        <!-- MAC node -->
+        <rect x="562" y="76" width="156" height="68" rx="14" fill="#1a1815" stroke="rgba(235,230,221,0.09)" stroke-width="1"/>
+        <text x="640" y="100" font-size="12.5" font-weight="600" fill="#ebe6dd" text-anchor="middle" class="nt">Mac Satellite</text>
+        <text x="640" y="117" font-size="10" fill="#9e9488" text-anchor="middle" class="nt">iMessage · Calendar · Reminders</text>
+        <text x="640" y="132" font-size="10" fill="#9e9488" text-anchor="middle" class="nt">Xcode · iOS builds · VPN</text>
+
+        <!-- IPHONE node -->
+        <rect x="572" y="253" width="136" height="50" rx="12" fill="#1a1815" stroke="rgba(235,230,221,0.09)" stroke-width="1"/>
+        <text x="640" y="274" font-size="12.5" font-weight="600" fill="#ebe6dd" text-anchor="middle" class="nt">iPhone · iPad</text>
+        <text x="640" y="291" font-size="10" fill="#9e9488" text-anchor="middle" class="nt">Voice · Push · VPN · React SPA</text>
+
+        <!-- HOME ASSISTANT node -->
+        <rect x="68" y="84" width="152" height="52" rx="12" fill="#1a1815" stroke="rgba(235,230,221,0.09)" stroke-width="1"/>
+        <text x="144" y="107" font-size="12.5" font-weight="600" fill="#ebe6dd" text-anchor="middle" class="nt">Home Assistant</text>
+        <text x="144" y="124" font-size="10" fill="#9e9488" text-anchor="middle" class="nt">Lights · climate · sensors</text>
+
+        <!-- CLOUD SERVICES node -->
+        <rect x="62" y="250" width="162" height="56" rx="12" fill="#1a1815" stroke="rgba(235,230,221,0.09)" stroke-width="1"/>
+        <text x="143" y="272" font-size="12.5" font-weight="600" fill="#ebe6dd" text-anchor="middle" class="nt">Cloud services</text>
+        <text x="143" y="289" font-size="10" fill="#9e9488" text-anchor="middle" class="nt">Plaid · Gmail · Tavily</text>
+        <text x="143" y="299" font-size="10" fill="#9e9488" text-anchor="middle" class="nt">weather · pfSense · more</text>
+      </svg>
     </div>
   </section>
 
-  <section class="feat">
-    <div class="wrap reveal">
-      <div class="row">
-        <div class="copy">
-          <div class="eyebrow"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Apple devices</div>
-          <h2>Connected to your Apple world.</h2>
-          <p>iMessage, Calendar, and Reminders stay in sync through a Mac in your home. Read, reply, and schedule without leaving Leo.</p>
-        </div>
-        <div class="art"><svg class="glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
-      </div>
-    </div>
-  </section>
+  <div class="intro reveal"><div class="eyebrow">One system. Every domain.</div><h2>Everything your home runs on.</h2></div>
 
-  <section class="feat">
-    <div class="wrap reveal">
-      <div class="row">
-        <div class="copy">
-          <div class="eyebrow"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.5 9.5a2.5 2 0 0 1 5 0c0 2.5-5 1.5-5 4a2.5 2 0 0 0 5 0"/></svg>Your money</div>
-          <h2>Keep an eye on your money.</h2>
-          <p>Accounts, spending, and upcoming bills in one place. Leo connects to your banks securely and flags what changed before anything is due.</p>
-        </div>
-        <div class="art"><svg class="glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l5-5 4 4 8-9"/><path d="M21 7v5h-5"/></svg></div>
-      </div>
+  <section class="feat"><div class="wrap reveal"><div class="row">
+    <div class="copy">
+      <div class="eyebrow"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>Smart home</div>
+      <h2>Control your smart home.</h2>
+      <p>Lights, climate, locks, scenes, and sensors — in plain language or automated in the background. Works with Home Assistant.</p>
     </div>
-  </section>
+    <div class="art"><svg class="glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg></div>
+  </div></div></section>
 
-  <section class="feat">
-    <div class="wrap reveal">
-      <div class="row">
-        <div class="copy">
-          <div class="eyebrow"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-8 0v2"/><circle cx="12" cy="7" r="4"/></svg>The whole household</div>
-          <h2>Built for the family.</h2>
-          <p>Shared calendars, chores, locations, and lists. Leo knows who’s home and what’s coming up, and keeps everyone on the same page.</p>
-        </div>
-        <div class="art"><svg class="glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-8 0v2"/><circle cx="12" cy="7" r="4"/></svg></div>
-      </div>
+  <section class="feat"><div class="wrap reveal"><div class="row">
+    <div class="copy">
+      <div class="eyebrow"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Apple devices</div>
+      <h2>Connected to your Apple world.</h2>
+      <p>iMessage, Calendar, and Reminders stay in sync through a Mac in your home. Read, reply, and schedule without leaving Leo.</p>
     </div>
-  </section>
+    <div class="art"><svg class="glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+  </div></div></section>
 
-  <section class="feat">
-    <div class="wrap reveal">
-      <div class="row">
-        <div class="copy">
-          <div class="eyebrow"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>Always on</div>
-          <h2>It works while you don’t.</h2>
-          <p>Background agents watch the things that matter — a sensor, a price, your inbox, the network — on a schedule, and reach out only when it’s worth it.</p>
-        </div>
-        <div class="art"><svg class="glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></div>
-      </div>
+  <section class="feat"><div class="wrap reveal"><div class="row">
+    <div class="copy">
+      <div class="eyebrow"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.5 9.5a2.5 2 0 0 1 5 0c0 2.5-5 1.5-5 4a2.5 2 0 0 0 5 0"/></svg>Your money</div>
+      <h2>Keep an eye on your money.</h2>
+      <p>Accounts, spending, and upcoming bills in one place. Leo connects to your banks securely and flags what changed before anything is due.</p>
     </div>
-  </section>
+    <div class="art"><svg class="glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l5-5 4 4 8-9"/><path d="M21 7v5h-5"/></svg></div>
+  </div></div></section>
 
-  <!-- Rust + privacy -->
-  <section class="band">
-    <div class="wrap reveal">
-      <div class="eyebrow"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Built in Rust</div>
-      <h2>Fast, private, and entirely yours.</h2>
-      <p>
-        Leo is written from the ground up in Rust — one efficient binary that runs cool and stays up for
-        months. It lives on your own server, in your own home. No cloud account, no subscription, no
-        telemetry. Your data never leaves the house unless you choose to share it.
-      </p>
-      <div class="pills">
-        <span class="pill">Self-hosted</span>
-        <span class="pill">No telemetry</span>
-        <span class="pill">No subscription</span>
-        <span class="pill">Encrypted at rest</span>
-        <span class="pill">Open architecture</span>
-      </div>
+  <section class="feat"><div class="wrap reveal"><div class="row">
+    <div class="copy">
+      <div class="eyebrow"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-8 0v2"/><circle cx="12" cy="7" r="4"/></svg>The whole household</div>
+      <h2>Built for the family.</h2>
+      <p>Shared calendars, chores, locations, and lists. Leo knows who’s home and what’s coming up, and keeps everyone on the same page.</p>
     </div>
-  </section>
+    <div class="art"><svg class="glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-8 0v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+  </div></div></section>
 
-  <!-- Get started -->
-  <section class="get">
-    <div class="wrap reveal">
-      <h2>Up and running in about 15 minutes.</h2>
-      <p class="lead">Start with the Mac app — it walks you through everything.</p>
-      <div class="steps">
-        <div class="stepcard"><div class="n">1</div><h3>Download Leo for Mac</h3><p>Install the Mac app. It bridges Apple services and guides you through the rest of setup.</p></div>
-        <div class="stepcard"><div class="n">2</div><h3>Flash Leo OS</h3><p>Download the Leo OS (.iso) and write it to a USB drive, 8 GB or larger.</p></div>
-        <div class="stepcard"><div class="n">3</div><h3>Boot your server</h3><p>Any spare x86_64 PC works. Boot from USB and Leo takes it from there — the Mac finds it automatically.</p></div>
-      </div>
-      <div class="cta-row">
-        <a class="btn btn-primary" href="https://github.com/TheBananaStand/leo-release/releases/download/latest/Leo.dmg">Download Leo for Mac</a>
-        <a class="btn btn-ghost iso-link" href="https://github.com/TheBananaStand/leo-release/releases">Download Leo OS</a>
-      </div>
+  <section class="feat"><div class="wrap reveal"><div class="row">
+    <div class="copy">
+      <div class="eyebrow"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>Always on</div>
+      <h2>It works while you don’t.</h2>
+      <p>Background agents watch the things that matter — a sensor, a price, your inbox, the network — on a schedule, and reach out only when it’s worth it.</p>
     </div>
-  </section>
+    <div class="art"><svg class="glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></div>
+  </div></div></section>
+
+  <section class="band"><div class="wrap reveal">
+    <div class="eyebrow"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Built in Rust</div>
+    <h2>Fast, private, and entirely yours.</h2>
+    <p>Leo is written from the ground up in Rust — one efficient binary that runs cool and stays up for months. It lives on your own server, in your own home. No cloud account, no subscription, no telemetry. Your data never leaves the house unless you choose to share it.</p>
+    <div class="pills">
+      <span class="pill">Self-hosted</span><span class="pill">No telemetry</span><span class="pill">No subscription</span>
+      <span class="pill">Encrypted at rest</span><span class="pill">Open architecture</span>
+    </div>
+  </div></section>
+
+  <section class="get"><div class="wrap reveal">
+    <h2>Up and running in about 15 minutes.</h2>
+    <p class="lead">Start with the Mac app — it walks you through everything.</p>
+    <div class="steps">
+      <div class="stepcard"><div class="n">1</div><h3>Download Leo for Mac</h3><p>Install the Mac app. It bridges Apple services and guides you through the rest of setup.</p></div>
+      <div class="stepcard"><div class="n">2</div><h3>Flash Leo OS</h3><p>Download the Leo OS (.iso) and write it to a USB drive, 8 GB or larger.</p></div>
+      <div class="stepcard"><div class="n">3</div><h3>Boot your server</h3><p>Any spare x86_64 PC works. Boot from USB and Leo takes it from there — the Mac finds it automatically.</p></div>
+    </div>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="https://github.com/TheBananaStand/leo-release/releases/download/latest/Leo.dmg">Download Leo for Mac</a>
+      <a class="btn btn-ghost iso-link" href="https://github.com/TheBananaStand/leo-release/releases">Download Leo OS</a>
+    </div>
+  </div></section>
 
   <footer>Leo — a private AI home operating system, written in Rust. &nbsp;·;&nbsp; <a href="https://github.com/TheBananaStand/leo-release/releases">Releases</a></footer>
 
 <script>
 (function () {
-  // Resolve the latest versioned ISO URL from the GitHub releases API
-  // and update all .iso-link anchors to download it directly.
   fetch('https://api.github.com/repos/TheBananaStand/leo-release/releases')
     .then(function (r) { return r.json(); })
     .then(function (releases) {
-      // Skip the rolling 'latest' prerelease; find the newest real versioned release.
       var rel = releases.find(function (r) { return !r.prerelease && r.tag_name !== 'latest'; });
       if (!rel) return;
       var iso = rel.assets.find(function (a) { return a.name.endsWith('.iso'); });
-      if (iso) {
-        document.querySelectorAll('.iso-link').forEach(function (el) {
-          el.href = iso.browser_download_url;
-        });
-      }
+      if (iso) document.querySelectorAll('.iso-link').forEach(function (el) { el.href = iso.browser_download_url; });
     })
     .catch(function () {});
 
-  // Scroll reveal
   if ('IntersectionObserver' in window) {
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
-    }, { threshold: 0.16 });
+    }, { threshold: 0.12 });
     document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
   } else {
     document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
