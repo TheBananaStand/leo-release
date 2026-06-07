@@ -1,590 +1,359 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en" data-leo-onboarding>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Leo — Your Private AI</title>
-  <meta name="description" content="Your private, self-hosted AI assistant for the home. Smart home, iMessage, finances — on your hardware.">
-  <meta property="og:title" content="Leo — Your Private AI">
-  <meta property="og:description" content="Your private, self-hosted AI assistant for the home. Smart home, iMessage, finances — on your hardware.">
-  <meta name="twitter:card" content="summary">
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Leo — Private AI Home Operating System</title>
+<meta name="description" content="Your private, self-hosted AI assistant for the home. Smart home, iMessage, finances — running on your hardware, written in Rust." />
+<meta property="og:title" content="Leo — Private AI Home Operating System" />
+<meta property="og:description" content="Your private, self-hosted AI assistant for the home. Running on your hardware, written in Rust." />
+<meta name="twitter:card" content="summary" />
+<style>
+  :root {
+    --bg: #23201c;
+    --bg-2: #1b1815;
+    --fg: #ebe6dd;
+    --muted: #9e9488;
+    --accent: #34D399;
+    --deep: #1a9e6b;
+    --mint: #b9f5dc;
+    --accent-ink: #14241b;
+    --line: rgba(235,230,221,0.10);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--fg); background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+    -webkit-user-select: none; user-select: none;
+    overflow-x: hidden;
+  }
+  a { color: inherit; text-decoration: none; }
+  .wrap { max-width: 1060px; margin: 0 auto; padding: 0 28px; }
+  .grad {
+    background: linear-gradient(110deg, var(--accent) 0%, var(--mint) 90%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
 
-    :root {
-      --bg: #08080f;
-      --surface: rgba(255,255,255,0.04);
-      --surface-hover: rgba(255,255,255,0.07);
-      --border: rgba(255,255,255,0.08);
-      --accent: #8b7cf6;
-      --accent-dim: rgba(139,124,246,0.18);
-      --accent-glow: rgba(139,124,246,0.28);
-      --text: #f0f0f8;
-      --text-2: rgba(240,240,248,0.55);
-      --text-3: rgba(240,240,248,0.32);
-      --radius: 18px;
-    }
+  /* ── Buttons ────────────────────────────────────────────── */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    cursor: pointer; border: 1px solid transparent; white-space: nowrap;
+    border-radius: 999px; font-size: 15px; font-weight: 600; padding: 11px 22px;
+    transition: transform .12s ease, background .15s ease, border-color .15s ease;
+  }
+  .btn:active { transform: scale(0.97); }
+  .btn-primary { background: var(--accent); color: var(--accent-ink); }
+  .btn-primary:hover { background: var(--deep); color: var(--fg); }
+  .btn-ghost { background: transparent; color: var(--fg); border-color: var(--line); }
+  .btn-ghost:hover { background: rgba(235,230,221,0.06); }
+  .btn-sm { padding: 8px 16px; font-size: 14px; }
+  .cta-row { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
 
-    html { scroll-behavior: smooth; }
+  /* ── “Alive” breathing glow ──────────────────────────────────── */
+  .glow { position: relative; }
+  .glow::before {
+    content: ""; position: absolute; inset: -40%; border-radius: 50%; z-index: -1;
+    background: radial-gradient(circle, rgba(52,211,153,0.55), transparent 62%);
+    animation: breathe 3s ease-in-out infinite;
+  }
+  @keyframes breathe { 0%,100% { opacity: .1; } 50% { opacity: .3; } }
 
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
-    }
+  /* ── Sticky nav ──────────────────────────────────────────── */
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    display: flex; align-items: center; justify-content: space-between; padding: 14px 28px;
+    backdrop-filter: saturate(160%) blur(14px); -webkit-backdrop-filter: saturate(160%) blur(14px);
+    background: rgba(35,32,28,0.6); border-bottom: 1px solid var(--line);
+  }
+  .nav .brand { display: flex; align-items: center; gap: 9px; font-weight: 600; letter-spacing: .2px; }
+  .nav .brand img { width: 26px; height: 26px; border-radius: 7px; }
 
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 100% 70% at 50% -10%, rgba(139,124,246,0.14) 0%, transparent 65%),
-        radial-gradient(ellipse 50% 40% at 10% 90%, rgba(80,60,200,0.07) 0%, transparent 60%),
-        radial-gradient(ellipse 50% 40% at 90% 60%, rgba(120,90,220,0.05) 0%, transparent 60%);
-      pointer-events: none;
-      z-index: 0;
-    }
+  /* ── Hero ─────────────────────────────────────────────────── */
+  .hero {
+    position: relative; min-height: 92vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; text-align: center; padding: 76px 28px 60px;
+    background:
+      radial-gradient(58% 46% at 50% 2%, rgba(52,211,153,0.16), transparent 70%),
+      linear-gradient(180deg, #2a2620 0%, var(--bg) 58%);
+  }
+  .hero-logo {
+    width: 128px; height: 128px; border-radius: 30px; margin-bottom: 30px;
+    background: radial-gradient(120% 120% at 50% 0%, #2c2820, #18140f);
+    border: 1px solid var(--line); display: flex; align-items: center; justify-content: center;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+  }
+  .hero-logo img { width: 84px; height: 84px; }
+  .kicker { font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 18px; }
+  h1 { font-size: clamp(42px, 7.4vw, 86px); line-height: 1.0; letter-spacing: -0.035em; font-weight: 700; margin: 0 0 22px; max-width: 16ch; }
+  .sub { font-size: clamp(17px, 2.1vw, 21px); line-height: 1.5; color: var(--muted); max-width: 56ch; margin: 0 auto 34px; }
+  .scroll-hint { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); color: var(--muted); opacity: .55; animation: bob 1.8s ease-in-out infinite; }
+  @keyframes bob { 0%,100% { transform: translate(-50%,0); } 50% { transform: translate(-50%,7px); } }
 
-    .wrap {
-      max-width: 860px;
-      margin: 0 auto;
-      padding: 0 28px;
-      position: relative;
-      z-index: 1;
-    }
+  /* ── Cross-domain statement ──────────────────────────────────── */
+  .statement { padding: 120px 0; border-top: 1px solid var(--line); text-align: center;
+    background: radial-gradient(70% 60% at 50% 50%, rgba(52,211,153,0.06), transparent 70%); }
+  .statement-alt { background: radial-gradient(70% 60% at 50% 50%, rgba(26,158,107,0.09), transparent 70%); }
+  .statement .pre { font-size: clamp(18px, 2.4vw, 24px); color: var(--muted); margin: 0 0 14px; font-weight: 500; }
+  .statement .big { font-size: clamp(30px, 5vw, 56px); line-height: 1.1; letter-spacing: -0.025em; font-weight: 700; margin: 0 auto 28px; max-width: 18ch; }
+  .statement .body { font-size: clamp(16px, 1.9vw, 19px); line-height: 1.6; color: var(--muted); max-width: 56ch; margin: 0 auto; }
 
-    /* ---- NAV ---- */
-    nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 22px 0;
-      border-bottom: 1px solid var(--border);
-    }
+  /* ── Section intro ─────────────────────────────────────────── */
+  .intro { text-align: center; padding: 96px 0 8px; }
+  .intro .eyebrow { color: var(--accent); font-weight: 700; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; }
+  .intro h2 { font-size: clamp(28px, 4.4vw, 46px); letter-spacing: -0.02em; margin: 12px 0 0; }
 
-    .nav-logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-      color: var(--text);
-      font-size: 17px;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-    }
+  /* ── Feature rows ──────────────────────────────────────────── */
+  section.feat { padding: 64px 0; }
+  .feat .row { display: grid; grid-template-columns: 1.1fr 1fr; gap: 48px; align-items: center; }
+  .feat:nth-child(even) .row { grid-template-columns: 1fr 1.1fr; }
+  .feat:nth-child(even) .copy { order: 2; }
+  .eyebrow { display: inline-flex; align-items: center; gap: 9px; color: var(--accent); font-weight: 700; font-size: 14px; letter-spacing: .3px; margin-bottom: 14px; }
+  .eyebrow .ic { width: 22px; height: 22px; }
+  .feat h2 { font-size: clamp(26px, 3.6vw, 40px); line-height: 1.1; letter-spacing: -0.02em; margin: 0 0 14px; font-weight: 700; }
+  .feat p { font-size: 18px; line-height: 1.55; color: var(--muted); margin: 0; max-width: 42ch; }
+  .art { aspect-ratio: 4/3; border-radius: 22px; border: 1px solid var(--line);
+    background: radial-gradient(120% 120% at 30% 10%, rgba(52,211,153,0.12), transparent 60%), var(--bg-2);
+    display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .art .glyph { width: 36%; height: 36%; color: var(--accent); opacity: .9; }
 
-    .nav-logo svg { color: var(--accent); }
+  /* ── Reveal on scroll ─────────────────────────────────────────── */
+  .reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1); }
+  .reveal.in { opacity: 1; transform: none; }
 
-    nav a.nav-link {
-      font-size: 14px;
-      color: var(--text-2);
-      text-decoration: none;
-      transition: color 0.15s;
-    }
-    nav a.nav-link:hover { color: var(--text); }
+  /* ── Rust / privacy band ───────────────────────────────────────── */
+  .band { margin: 64px 0; padding: 72px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+    text-align: center; background: radial-gradient(60% 80% at 50% 0%, rgba(26,158,107,0.10), transparent 70%); }
+  .band .eyebrow { justify-content: center; }
+  .band h2 { font-size: clamp(28px, 4.4vw, 48px); letter-spacing: -0.025em; margin: 0 0 16px; }
+  .band p { font-size: clamp(16px, 1.9vw, 19px); line-height: 1.6; color: var(--muted); max-width: 60ch; margin: 0 auto; }
+  .pills { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 26px; }
+  .pill { border: 1px solid var(--line); border-radius: 999px; padding: 7px 15px; font-size: 13px; color: var(--fg); background: rgba(235,230,221,0.03); }
 
-    /* ---- HERO ---- */
-    .hero {
-      text-align: center;
-      padding: 96px 0 80px;
-    }
+  /* ── Get started ─────────────────────────────────────────────── */
+  .get { padding: 96px 0 40px; text-align: center; }
+  .get h2 { font-size: clamp(28px, 4.5vw, 46px); letter-spacing: -0.02em; margin: 0 0 10px; }
+  .get .lead { color: var(--muted); font-size: 18px; margin: 0 auto 40px; max-width: 48ch; }
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; text-align: left; margin-bottom: 40px; }
+  .stepcard { background: rgba(235,230,221,0.03); border: 1px solid var(--line); border-radius: 18px; padding: 22px; }
+  .stepcard .n { width: 30px; height: 30px; border-radius: 50%; background: var(--accent); color: var(--accent-ink); font-weight: 800; font-size: 15px; display: flex; align-items: center; justify-content: center; margin-bottom: 14px; }
+  .stepcard h3 { font-size: 17px; margin: 0 0 6px; font-weight: 650; }
+  .stepcard p { font-size: 14px; color: var(--muted); margin: 0; line-height: 1.5; }
+  footer { text-align: center; color: var(--muted); opacity: .55; font-size: 13px; padding: 44px 0 56px; }
+  footer a { color: inherit; opacity: .7; }
+  footer a:hover { opacity: 1; }
 
-    .hero-icon {
-      width: 88px;
-      height: 88px;
-      margin: 0 auto 32px;
-      background: linear-gradient(145deg, rgba(139,124,246,0.18), rgba(139,124,246,0.06));
-      border: 1px solid rgba(139,124,246,0.3);
-      border-radius: 24px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--accent);
-      box-shadow: 0 0 50px var(--accent-glow), 0 0 120px rgba(139,124,246,0.08);
-      position: relative;
-    }
-
-    .hero-icon::after {
-      content: '';
-      position: absolute;
-      inset: -1px;
-      border-radius: 25px;
-      background: linear-gradient(145deg, rgba(139,124,246,0.35) 0%, transparent 55%);
-      z-index: -1;
-    }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      background: var(--accent-dim);
-      border: 1px solid rgba(139,124,246,0.28);
-      border-radius: 100px;
-      padding: 5px 14px;
-      font-size: 13px;
-      color: var(--accent);
-      font-weight: 500;
-      margin-bottom: 26px;
-      letter-spacing: -0.01em;
-    }
-
-    .badge-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--accent);
-      animation: dot-pulse 2.4s ease infinite;
-    }
-
-    @keyframes dot-pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.45; transform: scale(0.85); }
-    }
-
-    .hero h1 {
-      font-size: clamp(52px, 9vw, 80px);
-      font-weight: 700;
-      letter-spacing: -0.035em;
-      line-height: 1;
-      margin-bottom: 22px;
-      background: linear-gradient(160deg, #ffffff 30%, rgba(255,255,255,0.55));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .hero p {
-      font-size: clamp(17px, 2.5vw, 21px);
-      color: var(--text-2);
-      max-width: 440px;
-      margin: 0 auto 44px;
-      line-height: 1.55;
-      font-weight: 400;
-    }
-
-    .btn-primary {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 15px 30px;
-      background: var(--accent);
-      color: #fff;
-      text-decoration: none;
-      border-radius: 13px;
-      font-size: 16px;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-      transition: background 0.18s, transform 0.15s, box-shadow 0.18s;
-      box-shadow: 0 4px 22px var(--accent-glow), inset 0 1px 0 rgba(255,255,255,0.18);
-      position: relative;
-    }
-
-    .btn-primary:hover {
-      background: #9d8ff8;
-      transform: translateY(-2px);
-      box-shadow: 0 10px 34px var(--accent-glow), inset 0 1px 0 rgba(255,255,255,0.18);
-    }
-
-    .btn-primary:active { transform: translateY(0); }
-
-    .btn-primary svg { width: 18px; height: 18px; flex-shrink: 0; }
-
-    .hero-meta {
-      margin-top: 16px;
-      font-size: 13px;
-      color: var(--text-3);
-    }
-
-    .hero-meta a {
-      color: var(--text-3);
-      text-decoration: underline;
-      text-underline-offset: 3px;
-    }
-    .hero-meta a:hover { color: var(--text-2); }
-
-    /* ---- DIVIDER ---- */
-    .section { padding: 72px 0; }
-    .section + .section { border-top: 1px solid var(--border); }
-
-    .eyebrow {
-      text-align: center;
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 14px;
-      opacity: 0.85;
-    }
-
-    .section-title {
-      text-align: center;
-      font-size: clamp(26px, 4vw, 36px);
-      font-weight: 700;
-      letter-spacing: -0.025em;
-      margin-bottom: 52px;
-      line-height: 1.15;
-    }
-
-    /* ---- FEATURES ---- */
-    .features {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 14px;
-    }
-
-    @media (max-width: 560px) { .features { grid-template-columns: 1fr; } }
-
-    .feat {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 26px;
-      transition: background 0.18s, border-color 0.18s;
-    }
-
-    .feat:hover {
-      background: var(--surface-hover);
-      border-color: rgba(255,255,255,0.13);
-    }
-
-    .feat-icon {
-      width: 38px;
-      height: 38px;
-      border-radius: 10px;
-      background: var(--accent-dim);
-      border: 1px solid rgba(139,124,246,0.22);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--accent);
-      margin-bottom: 16px;
-    }
-
-    .feat-icon svg { width: 18px; height: 18px; }
-
-    .feat h3 {
-      font-size: 15px;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-      margin-bottom: 6px;
-    }
-
-    .feat p {
-      font-size: 14px;
-      color: var(--text-2);
-      line-height: 1.6;
-    }
-
-    /* ---- ARCH CALLOUT ---- */
-    .callout {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 36px 40px;
-      text-align: center;
-    }
-
-    .callout-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 14px;
-      background: var(--accent-dim);
-      border: 1px solid rgba(139,124,246,0.22);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--accent);
-      margin: 0 auto 18px;
-    }
-
-    .callout h3 {
-      font-size: 17px;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-      margin-bottom: 10px;
-    }
-
-    .callout p {
-      font-size: 14px;
-      color: var(--text-2);
-      line-height: 1.65;
-      max-width: 480px;
-      margin: 0 auto;
-    }
-
-    /* ---- STEPS ---- */
-    .steps {
-      max-width: 540px;
-      margin: 0 auto;
-    }
-
-    .step {
-      display: flex;
-      gap: 20px;
-      align-items: flex-start;
-      padding: 22px 0;
-      position: relative;
-    }
-
-    .step:not(:last-child)::after {
-      content: '';
-      position: absolute;
-      left: 18px;
-      top: 54px;
-      bottom: -6px;
-      width: 1px;
-      background: linear-gradient(to bottom, rgba(139,124,246,0.3), transparent);
-    }
-
-    .step-num {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      background: var(--accent-dim);
-      border: 1px solid rgba(139,124,246,0.35);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--accent);
-      flex-shrink: 0;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .step-body h3 {
-      font-size: 15px;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-      margin-bottom: 4px;
-      padding-top: 8px;
-    }
-
-    .step-body p {
-      font-size: 14px;
-      color: var(--text-2);
-      line-height: 1.6;
-    }
-
-    /* ---- BOTTOM CTA ---- */
-    .cta {
-      text-align: center;
-      padding: 88px 0 104px;
-    }
-
-    .cta h2 {
-      font-size: clamp(28px, 5vw, 44px);
-      font-weight: 700;
-      letter-spacing: -0.03em;
-      margin-bottom: 14px;
-      background: linear-gradient(160deg, #ffffff 30%, rgba(255,255,255,0.55));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .cta p {
-      font-size: 17px;
-      color: var(--text-2);
-      margin-bottom: 40px;
-    }
-
-    /* ---- FOOTER ---- */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 28px 0 48px;
-      text-align: center;
-      font-size: 13px;
-      color: var(--text-3);
-    }
-
-    footer a { color: var(--text-3); text-decoration: none; }
-    footer a:hover { color: var(--text-2); }
-    footer .sep { margin: 0 10px; opacity: 0.4; }
-
-    /* ---- RESPONSIVE ---- */
-    @media (max-width: 480px) {
-      .hero { padding: 64px 0 56px; }
-      .section { padding: 52px 0; }
-      .callout { padding: 28px 22px; }
-    }
-  </style>
+  @media (max-width: 760px) {
+    .feat .row, .feat:nth-child(even) .row { grid-template-columns: 1fr; gap: 24px; }
+    .feat:nth-child(even) .copy { order: 0; }
+    .art { aspect-ratio: 16/9; }
+    .steps { grid-template-columns: 1fr; }
+    .statement { padding: 84px 0; }
+  }
+</style>
 </head>
 <body>
-
-<div class="wrap">
-
-  <!-- Nav -->
-  <nav>
-    <a class="nav-logo" href="/">
-      <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-        <path d="M10 2l1.8 6.2H18l-5 3.6 1.9 6.2L10 14l-4.9 4 1.9-6.2L2 8.2h6.2z"/>
-      </svg>
-      Leo
-    </a>
-    <a class="nav-link" href="https://github.com/TheBananaStand/leo-release/releases">Releases &rarr;</a>
+  <nav class="nav">
+    <div class="brand"><img src="data:image/png;base64,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" alt="" /> Leo</div>
+    <a class="btn btn-primary btn-sm" href="https://github.com/TheBananaStand/leo-release/releases/download/latest/Leo.dmg">Download Leo for Mac</a>
   </nav>
 
   <!-- Hero -->
-  <section class="hero">
-    <div class="hero-icon" aria-hidden="true">
-      <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
-        <path d="M22 4.5L24.8 18H38L27.4 25.8L30.6 39L22 32L13.4 39L16.6 25.8L6 18H19.2L22 4.5Z" fill="currentColor" opacity="0.95"/>
-        <path d="M36 7L37.2 12L42 13L37.2 14L36 19L34.8 14L30 13L34.8 12L36 7Z" fill="currentColor" opacity="0.5"/>
-        <path d="M9 30L9.9 33.2L13 34L9.9 34.8L9 38L8.1 34.8L5 34L8.1 33.2L9 30Z" fill="currentColor" opacity="0.35"/>
-      </svg>
+  <header class="hero">
+    <div class="hero-logo glow"><img src="data:image/png;base64,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" alt="Leo" /></div>
+    <div class="kicker">Private AI Home Operating System</div>
+    <h1>Your whole home, <span class="grad">thinking as one</span>.</h1>
+    <p class="sub">
+      Leo brings your home, family, calendar, money, and Apple devices into a single system
+      that reasons across all of it — running privately on a server you own, and written from
+      the ground up in Rust.
+    </p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="https://github.com/TheBananaStand/leo-release/releases/download/latest/Leo.dmg">Download Leo for Mac</a>
+      <a class="btn btn-ghost iso-link" href="https://github.com/TheBananaStand/leo-release/releases">Download Leo OS</a>
     </div>
-
-    <div class="badge">
-      <span class="badge-dot"></span>
-      <span id="version-label">For Mac</span>
+    <div class="scroll-hint" aria-hidden="true">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
     </div>
+  </header>
 
-    <h1>Meet Leo</h1>
-    <p>Your private, self-hosted AI assistant for the home.</p>
-
-    <a href="https://github.com/TheBananaStand/leo-release/releases/latest/download/Leo.dmg" class="btn-primary" id="download-btn">
-      <svg viewBox="0 0 20 20" fill="currentColor">
-        <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/>
-      </svg>
-      Download Leo for Mac
-    </a>
-
-    <div class="hero-meta">
-      macOS 14 Sonoma or later &nbsp;&middot;&nbsp; Free &nbsp;&middot;&nbsp;
-      <a href="https://github.com/TheBananaStand/leo-release/releases">All releases</a>
+  <!-- Cross-domain reasoning -->
+  <section class="statement">
+    <div class="wrap reveal">
+      <p class="pre">Soccer at 4. Rain at 3. The garage door still open.</p>
+      <h2 class="big">To Leo, that’s <span class="grad">one thought</span> — not three apps.</h2>
+      <p class="body">
+        Most assistants answer questions. Leo connects them. Because your calendar, your sensors,
+        your messages, and your money all live in one place, Leo can reason across everything at
+        once — and act before you have to ask.
+      </p>
     </div>
   </section>
 
-  <!-- Features -->
-  <section class="section">
-    <p class="eyebrow">What Leo does</p>
-    <h2 class="section-title">Everything, from one place</h2>
-
-    <div class="features">
-      <div class="feat">
-        <div class="feat-icon">
-          <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/></svg>
-        </div>
-        <h3>Run your smart home</h3>
-        <p>Lights, scenes, climate, and sensors &mdash; in plain language.</p>
-      </div>
-
-      <div class="feat">
-        <div class="feat-icon">
-          <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clip-rule="evenodd"/></svg>
-        </div>
-        <h3>Bridge your Apple world</h3>
-        <p>iMessage, Calendar, and Reminders, synced through this Mac.</p>
-      </div>
-
-      <div class="feat">
-        <div class="feat-icon">
-          <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clip-rule="evenodd"/></svg>
-        </div>
-        <h3>Watch your money</h3>
-        <p>Accounts, spending, and bills at a glance.</p>
-      </div>
-
-      <div class="feat">
-        <div class="feat-icon">
-          <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-        </div>
-        <h3>Stay private</h3>
-        <p>Runs on your hardware. No subscriptions, no telemetry.</p>
+  <!-- Package system -->
+  <section class="statement statement-alt">
+    <div class="wrap reveal">
+      <p class="pre">And it’s never finished.</p>
+      <h2 class="big">A new type of <span class="grad">operating system</span>.</h2>
+      <p class="body">
+        Leo isn’t a fixed app with a feature list. Like any real OS, every capability — your smart home,
+        your finances, your email, even the interface itself — is a package you can add, remove, or build
+        yourself. Leo is the layer everything else runs on, and it grows with you.
+      </p>
+      <div class="pills">
+        <span class="pill">Smart home</span>
+        <span class="pill">Calendar</span>
+        <span class="pill">Finance</span>
+        <span class="pill">Email</span>
+        <span class="pill">Knowledge</span>
+        <span class="pill">Weather</span>
+        <span class="pill">Code</span>
+        <span class="pill">+ your own</span>
       </div>
     </div>
   </section>
 
-  <!-- Architecture callout -->
-  <section class="section">
-    <div class="callout">
-      <div class="callout-icon">
-        <svg width="22" height="22" viewBox="0 0 22 22" fill="currentColor"><path d="M11 2C6.03 2 2 6.03 2 11s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9zm.5 13.5h-1v-6h1v6zm0-8h-1v-1h1v1z"/></svg>
-      </div>
-      <h3>This Mac becomes Leo&rsquo;s link to Apple services.</h3>
-      <p>Leo runs on a Linux server on your home network &mdash; always on, always fast. The Mac app is the bridge: iMessage in, Calendar and Reminders synced, iOS control in your pocket.</p>
-    </div>
-  </section>
-
-  <!-- How it works -->
-  <section class="section">
-    <p class="eyebrow">Getting started</p>
-    <h2 class="section-title">Up and running in 15 minutes</h2>
-
-    <div class="steps">
-      <div class="step">
-        <div class="step-num">1</div>
-        <div class="step-body">
-          <h3>Download Leo for Mac</h3>
-          <p>Install the app above. It handles Apple ecosystem access and guides you through the rest of setup.</p>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num">2</div>
-        <div class="step-body">
-          <h3>Flash Leo OS to a USB drive</h3>
-          <p>Download the Leo OS installer from Releases and flash it to a USB drive (8 GB+). Any spare x86_64 PC works as the server.</p>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num">3</div>
-        <div class="step-body">
-          <h3>Boot your home server</h3>
-          <p>Boot from USB and follow the on-screen installer. Leo OS sets everything up automatically.</p>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num">4</div>
-        <div class="step-body">
-          <h3>Leo finds itself</h3>
-          <p>The Mac app discovers Leo on your local network automatically and walks you through pairing. No port forwarding, no config files.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Bottom CTA -->
-  <section class="cta">
-    <h2>Your home, your AI.</h2>
-    <p>Self-hosted. Private. No cloud required.</p>
-    <a href="https://github.com/TheBananaStand/leo-release/releases/latest/download/Leo.dmg" class="btn-primary">
-      <svg viewBox="0 0 20 20" fill="currentColor" width="18" height="18">
-        <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/>
-      </svg>
-      Download Leo for Mac
-    </a>
-    <div class="hero-meta" style="margin-top:16px;">
-      macOS 14 Sonoma or later &nbsp;&middot;&nbsp; Free
-    </div>
-  </section>
-
-</div>
-
-<!-- Footer -->
-<footer>
-  <div class="wrap">
-    <a href="https://github.com/TheBananaStand/leo-release">GitHub</a>
-    <span class="sep">&middot;</span>
-    <a href="https://github.com/TheBananaStand/leo-release/releases">Releases</a>
+  <!-- Capabilities -->
+  <div class="intro reveal">
+    <div class="eyebrow">One system. Every domain.</div>
+    <h2>Everything your home runs on.</h2>
   </div>
-</footer>
+
+  <section class="feat">
+    <div class="wrap reveal">
+      <div class="row">
+        <div class="copy">
+          <div class="eyebrow"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>Smart home</div>
+          <h2>Control your smart home.</h2>
+          <p>Lights, climate, locks, scenes, and sensors — in plain language or automated in the background. Works with Home Assistant.</p>
+        </div>
+        <div class="art"><svg class="glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="feat">
+    <div class="wrap reveal">
+      <div class="row">
+        <div class="copy">
+          <div class="eyebrow"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Apple devices</div>
+          <h2>Connected to your Apple world.</h2>
+          <p>iMessage, Calendar, and Reminders stay in sync through a Mac in your home. Read, reply, and schedule without leaving Leo.</p>
+        </div>
+        <div class="art"><svg class="glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="feat">
+    <div class="wrap reveal">
+      <div class="row">
+        <div class="copy">
+          <div class="eyebrow"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.5 9.5a2.5 2 0 0 1 5 0c0 2.5-5 1.5-5 4a2.5 2 0 0 0 5 0"/></svg>Your money</div>
+          <h2>Keep an eye on your money.</h2>
+          <p>Accounts, spending, and upcoming bills in one place. Leo connects to your banks securely and flags what changed before anything is due.</p>
+        </div>
+        <div class="art"><svg class="glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l5-5 4 4 8-9"/><path d="M21 7v5h-5"/></svg></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="feat">
+    <div class="wrap reveal">
+      <div class="row">
+        <div class="copy">
+          <div class="eyebrow"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-8 0v2"/><circle cx="12" cy="7" r="4"/></svg>The whole household</div>
+          <h2>Built for the family.</h2>
+          <p>Shared calendars, chores, locations, and lists. Leo knows who’s home and what’s coming up, and keeps everyone on the same page.</p>
+        </div>
+        <div class="art"><svg class="glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-8 0v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="feat">
+    <div class="wrap reveal">
+      <div class="row">
+        <div class="copy">
+          <div class="eyebrow"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>Always on</div>
+          <h2>It works while you don’t.</h2>
+          <p>Background agents watch the things that matter — a sensor, a price, your inbox, the network — on a schedule, and reach out only when it’s worth it.</p>
+        </div>
+        <div class="art"><svg class="glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Rust + privacy -->
+  <section class="band">
+    <div class="wrap reveal">
+      <div class="eyebrow"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Built in Rust</div>
+      <h2>Fast, private, and entirely yours.</h2>
+      <p>
+        Leo is written from the ground up in Rust — one efficient binary that runs cool and stays up for
+        months. It lives on your own server, in your own home. No cloud account, no subscription, no
+        telemetry. Your data never leaves the house unless you choose to share it.
+      </p>
+      <div class="pills">
+        <span class="pill">Self-hosted</span>
+        <span class="pill">No telemetry</span>
+        <span class="pill">No subscription</span>
+        <span class="pill">Encrypted at rest</span>
+        <span class="pill">Open architecture</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Get started -->
+  <section class="get">
+    <div class="wrap reveal">
+      <h2>Up and running in about 15 minutes.</h2>
+      <p class="lead">Start with the Mac app — it walks you through everything.</p>
+      <div class="steps">
+        <div class="stepcard"><div class="n">1</div><h3>Download Leo for Mac</h3><p>Install the Mac app. It bridges Apple services and guides you through the rest of setup.</p></div>
+        <div class="stepcard"><div class="n">2</div><h3>Flash Leo OS</h3><p>Download the Leo OS (.iso) and write it to a USB drive, 8 GB or larger.</p></div>
+        <div class="stepcard"><div class="n">3</div><h3>Boot your server</h3><p>Any spare x86_64 PC works. Boot from USB and Leo takes it from there — the Mac finds it automatically.</p></div>
+      </div>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="https://github.com/TheBananaStand/leo-release/releases/download/latest/Leo.dmg">Download Leo for Mac</a>
+        <a class="btn btn-ghost iso-link" href="https://github.com/TheBananaStand/leo-release/releases">Download Leo OS</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>Leo — a private AI home operating system, written in Rust. &nbsp;·;&nbsp; <a href="https://github.com/TheBananaStand/leo-release/releases">Releases</a></footer>
 
 <script>
-  // Show latest release version in badge
-  fetch('https://api.github.com/repos/TheBananaStand/leo-release/releases/latest')
-    .then(r => r.json())
-    .then(d => {
-      if (d.tag_name) {
-        document.getElementById('version-label').textContent = d.tag_name;
+(function () {
+  // Resolve the latest versioned ISO URL from the GitHub releases API
+  // and update all .iso-link anchors to download it directly.
+  fetch('https://api.github.com/repos/TheBananaStand/leo-release/releases')
+    .then(function (r) { return r.json(); })
+    .then(function (releases) {
+      // Skip the rolling 'latest' prerelease; find the newest real versioned release.
+      var rel = releases.find(function (r) { return !r.prerelease && r.tag_name !== 'latest'; });
+      if (!rel) return;
+      var iso = rel.assets.find(function (a) { return a.name.endsWith('.iso'); });
+      if (iso) {
+        document.querySelectorAll('.iso-link').forEach(function (el) {
+          el.href = iso.browser_download_url;
+        });
       }
     })
-    .catch(() => {});
-</script>
+    .catch(function () {});
 
+  // Scroll reveal
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.16 });
+    document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
+  }
+})();
+</script>
 </body>
 </html>
